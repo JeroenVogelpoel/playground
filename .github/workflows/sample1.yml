@@ -41,3 +41,8 @@ jobs:
       - name: Test
         run: ls -lah
         
+      - name: Upload
+        uses: actions/upload-artifact@v2
+        with:
+          path: target.txt
+        

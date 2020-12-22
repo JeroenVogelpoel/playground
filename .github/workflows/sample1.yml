@@ -49,13 +49,20 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: [build]
+    
+    environment: sample-environment
+    
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v2
       
       - name: Listing downloaded files
-        run: ls -lah
+        run: ls -lahR
         
       - name: CURLing
-        run: curl -G -k https://www.chinaplus.eu/
+        run: |
+          curl --location --request PUT "https://dfwhpersonal.blob.core.windows.net/\$web/hello-world.txt$azure_storage_sas" \
+            --header 'x-ms-blob-type: BlockBlob' \
+            --header 'Content-Type: text/plain' \
+            --data-raw 'Hello, world!'
   

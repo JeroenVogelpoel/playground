@@ -60,13 +60,14 @@ jobs:
       - name: Upload to Azure Storage
         env:
           storage_account: dfwhpersonal
-          container: \$web
-          azure_storage_sas: ${{ secrets.AZURE_STORAGE_SAS }}
+          container: $web
+          sas: ${{ secrets.AZURE_STORAGE_SAS }}
         run: |
           shopt -s globstar
-          for file in ./artifact/** 
+          cd artifact
+          for file in ** 
           do
             [ -f $file ] &&
-              curl -T $file "https://$storage_account.blob.core.windows.net/$container/$file$azure_storage_sas" \
+              curl -T $file "https://$storage_account.blob.core.windows.net/$container/$file$sas" \
                 -H 'x-ms-blob-type: BlockBlob'
            done
